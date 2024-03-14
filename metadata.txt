@@ -12,8 +12,8 @@ email=nimodo.nosepudosoloishiba@gmail.com
 
 about=This tool extracts the coordinates of the canvas and opens Corona Cast webpage on the same coordinates.
 
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/ishibaro/CAST-corona-clicker/issues
+repository=https://github.com/ishibaro/CAST-corona-clicker
 # End of mandatory metadata
 
 # Recommended items:
