@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/cast_corona_clicker" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>
