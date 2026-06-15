@@ -7,15 +7,26 @@ author=Ishiba RO
 email=ishiba.iro@gmail.com
 
 about=Click anywhere on the QGIS canvas to discover which CORONA satellite passes cover that location, confirmed in real time against the imagery server. Each pass can be expanded into its individual frames. Load any image directly into QGIS, or open the Corona CAST Atlas webpage at that location.
-
     CORONA imagery was collected by US reconnaissance satellites between 1960 and 1972 and is a unique resource for archaeology, landscape change, and historical research.
-
     Original version created as part of the EAMENA project (University of Leicester / Durham University / University of Oxford).
     Imagery and services provided by CAST, University of Arkansas.
 
 tracker=https://github.com/ishibaro/CAST-corona-clicker/issues
 repository=https://github.com/ishibaro/CAST-corona-clicker
 hasProcessingProvider=no
+
+changelog=Version 2.0.0 - Major rewrite
+    New: Click now finds and confirms which CORONA images actually cover the point, instead of just opening the browser.
+    New: Results dialog with an expandable tree of passes and their individual frames.
+    New: Load any pass or frame directly into QGIS as a WMTS layer.
+    New: On-disk cache of the CORONA index, with a menu option to check for and download updates.
+    New: Coverage confirmation uses WMS GetFeatureInfo against the imagery cache, working around the offline footprints database.
+    New: About / Help / Changelog dialog.
+    Improved: Background threading keeps QGIS responsive during server queries.
+    Improved: Compatible with both QGIS 3 and QGIS 4.
+    Fixed: Click coordinate now uses the actual click position rather than the last mouse position.
+    Version 0.1 - Initial release: click the map to open the Corona CAST Atlas webpage at the clicked coordinates.
+
 tags=corona, archaeology, historical imagery, satellite, spy satellite, CAST, EAMENA, remote sensing
 homepage=https://corona.cast.uark.edu/
 category=Web
