@@ -1,6 +1,7 @@
 [general]
 name=CAST Corona Clicker
 qgisMinimumVersion=3.16
+qgisMaximumVersion=4.99
 description=Click on the QGIS canvas to find and load declassified CORONA spy satellite imagery (1960-1972) from the Corona CAST Atlas (University of Arkansas).
 version=2.1.0
 author=Ishiba RO
