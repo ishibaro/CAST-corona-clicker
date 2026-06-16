@@ -1,4 +1,4 @@
-# 🛰 CAST Corona Clicker v2.0
+# 🛰 CAST Corona Clicker v2.1
 
 A QGIS plugin to find and load declassified **CORONA spy satellite imagery
 (1960–1972)** from the [Corona CAST Atlas](https://corona.cast.uark.edu/),
