@@ -24,6 +24,19 @@ CAPABILITIES_URL = (
 CACHE_FILENAME = "corona_capabilities.xml"
 
 
+def _safe_urlopen(url, timeout):
+    """
+    Open an HTTPS URL only. Rejects any other scheme (file://, ftp://, etc.)
+    to satisfy security scanners and avoid unexpected scheme handling.
+    """
+    if not url.lower().startswith("https://"):
+        raise ValueError(f"Refusing to open non-HTTPS URL: {url}")
+    req = urllib.request.Request(
+        url, headers={"User-Agent": "QGIS-CoronaCastPlugin/2.0"}
+    )
+    return urllib.request.urlopen(req, timeout=timeout)  # nosec B310
+
+
 def cache_path(plugin_dir):
     """Return the full path to the cached capabilities file."""
     return os.path.join(plugin_dir, "data", CACHE_FILENAME)
@@ -38,11 +51,7 @@ def download_capabilities(timeout=120):
     Download the GetCapabilities document from the CAST server.
     Returns the raw text. Raises on failure.
     """
-    req = urllib.request.Request(
-        CAPABILITIES_URL,
-        headers={"User-Agent": "QGIS-CoronaCastPlugin/2.0"},
-    )
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
+    with _safe_urlopen(CAPABILITIES_URL, timeout) as resp:
         return resp.read().decode("utf-8")
 
 

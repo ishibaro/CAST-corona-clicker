@@ -35,11 +35,14 @@ def _check_one(layer_name, lon, lat, timeout=20):
     None  = request failed
     """
     url = _featureinfo_url(layer_name, lon, lat)
+    # Only ever contact the CAST server over HTTPS.
+    if not url.lower().startswith("https://"):
+        return (layer_name, None)
     try:
         req = urllib.request.Request(
             url, headers={"User-Agent": "QGIS-CoronaCastPlugin/2.0"}
         )
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310
             data = json.loads(resp.read().decode("utf-8"))
         feats = data.get("features", [])
         # Imagery present if any GRAY_INDEX is non-zero
