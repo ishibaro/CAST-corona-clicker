@@ -17,6 +17,7 @@ from qgis.utils import iface as qgis_iface
 
 from . import capabilities as caps
 from .clic_map_cast import CoronaMapTool
+from .legacy_map_cast import LegacyMapTool
 from .about_dialog import AboutDialog
 
 
@@ -26,7 +27,9 @@ class CoronaCastPlugin:
         self.iface = iface
         self.plugin_dir = os.path.dirname(__file__)
         self.map_tool = None
+        self.legacy_tool = None
         self.action_click = None
+        self.action_legacy = None
         self.action_update = None
         self.action_about = None
         self._layers = None      # cached {name: bbox} dict (lazy-loaded)
@@ -40,22 +43,52 @@ class CoronaCastPlugin:
 
     def initGui(self):
         icon_path = os.path.join(self.plugin_dir, "icon.png")
+        legacy_icon_path = os.path.join(self.plugin_dir, "icon_legacy.png")
         self.map_tool = CoronaMapTool(self.iface.mapCanvas(), self)
+        self.legacy_tool = LegacyMapTool(self.iface.mapCanvas())
 
-        # Click tool action
+        # --- Click & Explore (new) -----------------------------------
         self.action_click = QAction(
             QIcon(icon_path),
-            self.tr("🛰 CAST Corona Clicker"),
+            self.tr("🛰 Click & Explore (find CORONA images)"),
             self.iface.mainWindow(),
         )
         self.action_click.setToolTip(
-            self.tr("Click the map to find CORONA images at that location")
+            self.tr(
+                "Click the map to find which CORONA images cover that "
+                "location, then load them into QGIS."
+            )
         )
         self.action_click.setCheckable(True)
         self.action_click.triggered.connect(self.activate_tool)
         self.iface.addToolBarIcon(self.action_click)
         self.iface.addPluginToWebMenu(
             self.tr("&CAST Corona Clicker"), self.action_click
+        )
+
+        # --- Click & Go (legacy) -------------------------------------
+        # Falls back to the main icon if no dedicated legacy icon exists.
+        legacy_icon = (
+            QIcon(legacy_icon_path)
+            if os.path.exists(legacy_icon_path)
+            else QIcon(icon_path)
+        )
+        self.action_legacy = QAction(
+            legacy_icon,
+            self.tr("🌐 Click & Go (open CAST Atlas in browser)"),
+            self.iface.mainWindow(),
+        )
+        self.action_legacy.setToolTip(
+            self.tr(
+                "Original behaviour: click the map to open the Corona CAST "
+                "Atlas in your browser at that location."
+            )
+        )
+        self.action_legacy.setCheckable(True)
+        self.action_legacy.triggered.connect(self.activate_legacy_tool)
+        self.iface.addToolBarIcon(self.action_legacy)
+        self.iface.addPluginToWebMenu(
+            self.tr("&CAST Corona Clicker"), self.action_legacy
         )
 
         # Update-index action
@@ -78,21 +111,31 @@ class CoronaCastPlugin:
             self.tr("&CAST Corona Clicker"), self.action_about
         )
 
-        # Uncheck button when another tool is selected
+        # Uncheck buttons when another tool is selected
         self.map_tool.deactivated.connect(
             lambda: self.action_click.setChecked(False)
         )
+        self.legacy_tool.deactivated.connect(
+            lambda: self.action_legacy.setChecked(False)
+        )
 
     def unload(self):
-        for a in (self.action_click, self.action_update, self.action_about):
+        actions = (
+            self.action_click, self.action_legacy,
+            self.action_update, self.action_about,
+        )
+        for a in actions:
             if a:
                 self.iface.removePluginWebMenu(
                     self.tr("&CAST Corona Clicker"), a
                 )
-        if self.action_click:
-            self.iface.removeToolBarIcon(self.action_click)
+        for a in (self.action_click, self.action_legacy):
+            if a:
+                self.iface.removeToolBarIcon(a)
         if self.map_tool:
             self.iface.mapCanvas().unsetMapTool(self.map_tool)
+        if self.legacy_tool:
+            self.iface.mapCanvas().unsetMapTool(self.legacy_tool)
 
     # ------------------------------------------------------------------ #
     #  Capabilities cache                                                  #
@@ -239,3 +282,8 @@ class CoronaCastPlugin:
 
         self.iface.mapCanvas().setMapTool(self.map_tool)
         self.action_click.setChecked(True)
+
+    def activate_legacy_tool(self):
+        """Activate the original Click & Go tool (browser only, no index)."""
+        self.iface.mapCanvas().setMapTool(self.legacy_tool)
+        self.action_legacy.setChecked(True)

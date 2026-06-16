@@ -27,7 +27,7 @@ from qgis.PyQt.QtWidgets import (
 
 ABOUT_HTML = """
 <h2>🛰 CAST Corona Clicker</h2>
-<p><b>Version 2.0.0</b></p>
+<p><b>Version 2.1.0</b></p>
 
 <p>Find and load declassified <b>CORONA spy satellite imagery
 (1960&ndash;1972)</b> from the
@@ -40,15 +40,14 @@ server &mdash; then load any pass or frame as a layer, or open the
 CAST Atlas in your browser.</p>
 
 <p><b>Author:</b> Ishiba RO<br>
-<b>Email:</b> ishiba.iro@gmail.com<br>
+<b>Email:</b> nimodo.nosepudosoloishiba@gmail.com<br>
 <b>Repository:</b>
 <a href="https://github.com/ishibaro/CAST-corona-clicker">
 github.com/ishibaro/CAST-corona-clicker</a></p>
 
 <hr>
 
-<p><small>version 2.0 iRO ©️ 2026
-<br>version 0.1 created as part of the
+<p><small>Created as part of the
 <a href="https://eamena.org/">EAMENA</a> project
 (University of Leicester / Durham University).</small></p>
 
@@ -70,8 +69,19 @@ Download / update CORONA index&hellip;</b></p>
 archive almost never changes.</p>
 
 <h3>2. Find imagery</h3>
+<p>There are two tools in the toolbar:</p>
+<ul>
+<li><b>🛰 Click &amp; Explore</b> &mdash; click the map to find which
+CORONA passes cover that point, confirmed against the server, then load
+them into QGIS.</li>
+<li><b>🌐 Click &amp; Go</b> &mdash; the original behaviour: click the map
+to open the Corona CAST Atlas in your browser at that location. Fast, no
+index needed.</li>
+</ul>
+
+<p><b>Using Click &amp; Explore:</b></p>
 <ol>
-<li>Click the <b>🛰 toolbar button</b> to activate the tool.</li>
+<li>Click the <b>🛰 Click &amp; Explore</b> toolbar button.</li>
 <li>Click anywhere on the QGIS canvas.</li>
 <li>The plugin finds which satellite <b>passes</b> cover that point and
 confirms real coverage against the server.</li>
@@ -109,6 +119,18 @@ occasionally overloaded. Wait a moment and try again.</li>
 
 CHANGELOG_HTML = """
 <h2>Changelog</h2>
+
+<h3>Version 2.1.0</h3>
+<ul>
+<li><b>New:</b> <b>Click &amp; Go</b> legacy button &mdash; one click opens
+the Corona CAST Atlas in the browser at that point, honouring the original
+plugin behaviour.</li>
+<li><b>Changed:</b> the main tool is now called <b>Click &amp; Explore</b>.</li>
+<li><b>Fixed:</b> passes that are only registered in coarse cache cells
+(seen in parts of the Nile Delta and the Baltic) were being missed.
+Coverage is now confirmed for all non-global candidates via
+GetFeatureInfo instead of pre-filtering by cell size.</li>
+</ul>
 
 <h3>Version 2.0.0</h3>
 <p><i>Major rewrite.</i></p>

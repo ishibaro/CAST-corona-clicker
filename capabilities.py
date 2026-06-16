@@ -109,24 +109,34 @@ def _area(b):
     return (b[2] - b[0]) * (b[3] - b[1])
 
 
-def is_world_bbox(b):
-    """True if the bbox basically covers the whole planet (useless)."""
-    return b[0] <= -179 and b[2] >= 179 and b[1] <= -89 and b[3] >= 89
-
-
-def candidate_layers(layers, lon, lat, max_area=600.0, passes_only=True):
+def is_global_cell(b):
     """
-    Return candidate layer names whose (coarse) bbox contains the point,
-    discarding world-sized bboxes and oversized cells.
+    True if the bbox spans the full latitude range (-90 to 90), which marks
+    the useless 'whole planet' cache cells. These give no positional
+    information and must be discarded before the coverage check.
+
+    Note: we deliberately do NOT discard merely 'large' cells (e.g. 90x90),
+    because some real passes are only registered at coarse pyramid levels.
+    Those are kept and confirmed properly via GetFeatureInfo.
+    """
+    return b[1] <= -89 and b[3] >= 89
+
+
+def candidate_layers(layers, lon, lat, passes_only=True):
+    """
+    Return candidate layer names whose (coarse) bbox contains the point.
+
+    Only the truly global cells (full latitude span) are discarded; all
+    other candidates are kept and confirmed downstream with GetFeatureInfo,
+    because the GWC bounding boxes are cache cells, not real footprints, and
+    a valid pass may only appear in a coarse (large) cell.
 
     passes_only=True keeps only satellite passes (names ending in
     'Fore' or 'Aft'), not individual frames (df / da).
     """
     out = []
     for name, b in layers.items():
-        if is_world_bbox(b):
-            continue
-        if _area(b) > max_area:
+        if is_global_cell(b):
             continue
         if not (b[0] <= lon <= b[2] and b[1] <= lat <= b[3]):
             continue

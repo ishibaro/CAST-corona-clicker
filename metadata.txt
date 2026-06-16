@@ -1,9 +1,8 @@
 [general]
 name=CAST Corona Clicker
 qgisMinimumVersion=3.16
-qgisMaximumVersion=4.99
 description=Click on the QGIS canvas to find and load declassified CORONA spy satellite imagery (1960-1972) from the Corona CAST Atlas (University of Arkansas).
-version=2.0.0
+version=2.1.0
 author=Ishiba RO
 email=ishiba.iro@gmail.com
 
@@ -16,7 +15,11 @@ tracker=https://github.com/ishibaro/CAST-corona-clicker/issues
 repository=https://github.com/ishibaro/CAST-corona-clicker
 hasProcessingProvider=no
 
-changelog=Version 2.0.0 - Major rewrite
+changelog=Version 2.1.0
+    New: 'Click & Go' legacy button - one click opens the Corona CAST Atlas in the browser at that point, honouring the original plugin behaviour.
+    Renamed the main tool to 'Click & Explore'.
+    Fixed: passes registered only in coarse cache cells (e.g. parts of the Nile Delta and the Baltic) are no longer missed. Coverage is now confirmed for all non-global candidates via GetFeatureInfo instead of pre-filtering by cell size.
+    Version 2.0.0 - Major rewrite
     New: Click now finds and confirms which CORONA images actually cover the point, instead of just opening the browser.
     New: Results dialog with an expandable tree of passes and their individual frames.
     New: Load any pass or frame directly into QGIS as a WMTS layer.
