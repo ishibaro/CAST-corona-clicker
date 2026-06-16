@@ -40,16 +40,17 @@ server &mdash; then load any pass or frame as a layer, or open the
 CAST Atlas in your browser.</p>
 
 <p><b>Author:</b> Ishiba RO<br>
-<b>Email:</b> nimodo.nosepudosoloishiba@gmail.com<br>
+<b>Email:</b> ishiba.iro@gmail.com<br>
 <b>Repository:</b>
 <a href="https://github.com/ishibaro/CAST-corona-clicker">
 github.com/ishibaro/CAST-corona-clicker</a></p>
 
 <hr>
 
-<p><small>Created as part of the
+<p><small>Version 2.1 ©️ iRO 2026 
+<br>Version 1.0.1 created as part of the
 <a href="https://eamena.org/">EAMENA</a> project
-(University of Leicester / Durham University).</small></p>
+(University of Leicester / Durham University / University of Oxford).</small></p>
 
 <p><small>Imagery and services &copy; Center for Advanced Spatial
 Technologies (CAST), University of Arkansas. Please cite:
@@ -61,32 +62,34 @@ HELP_HTML = """
 <h2>How to use</h2>
 
 <h3>1. First-time setup</h3>
-<p>Before first use, download the CORONA image index (~12&nbsp;MB,
+<p>Once the plugin has been installed, go to the menu <b>Web &rarr; CAST Corona Clicker &rarr;
+Download / update CORONA index&hellip;</b> to download the CORONA image index (~12&nbsp;MB,
 one time only):</p>
-<p><b>Web menu &rarr; CAST Corona Clicker &rarr;
-Download / update CORONA index&hellip;</b></p>
 <p>This is cached on disk so you only need to do it once. The CORONA
 archive almost never changes.</p>
 
 <h3>2. Find imagery</h3>
 <p>There are two tools in the toolbar:</p>
 <ul>
-<li><b>🛰 Click &amp; Explore</b> &mdash; click the map to find which
+<li><b>🛰 Click and Explore</b> &mdash; click the map to find which
 CORONA passes cover that point, confirmed against the server, then load
 them into QGIS.</li>
-<li><b>🌐 Click &amp; Go</b> &mdash; the original behaviour: click the map
+<li><b>🌐 Click and Go</b> &mdash; the original behaviour: click the map
 to open the Corona CAST Atlas in your browser at that location. Fast, no
 index needed.</li>
 </ul>
 
-<p><b>Using Click &amp; Explore:</b></p>
+<p><b>Click and Explore:</b></p>
+This is the default behaviuour. You can find this tool in the menu <b>Web &rarr; CAST Corona Clicker</b>
+or you can click the new button in the Plugin toolbar
 <ol>
-<li>Click the <b>🛰 Click &amp; Explore</b> toolbar button.</li>
+<li>Select <b>🛰 Click &amp; Explore</b> toolbar button.</li>
 <li>Click anywhere on the QGIS canvas.</li>
 <li>The plugin finds which satellite <b>passes</b> cover that point and
 confirms real coverage against the server.</li>
 <li>A dialog lists the confirmed passes. <b>Expand</b> a pass (click the
 arrow) to see its individual frames.</li>
+You can load the whole satellite pass or individual images.
 </ol>
 
 <h3>3. Load or explore</h3>

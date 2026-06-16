@@ -45,7 +45,11 @@ def _check_one(layer_name, lon, lat, timeout=20):
         with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310
             data = json.loads(resp.read().decode("utf-8"))
         feats = data.get("features", [])
-        # Imagery present if any GRAY_INDEX is non-zero
+        # Real imagery is present only where GRAY_INDEX is non-zero.
+        # GRAY_INDEX 0 is the white "no data" fill of the bounding box
+        # (rotated CORONA frames leave large blank borders); values 1-255
+        # are actual image pixels (1 = near black, 255 = white). A point
+        # that only returns 0 sits in the blank fill, not on real imagery.
         for f in feats:
             val = f.get("properties", {}).get("GRAY_INDEX", 0)
             if val and val != 0:

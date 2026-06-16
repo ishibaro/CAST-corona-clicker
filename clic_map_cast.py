@@ -43,7 +43,7 @@ class CoverageWorker(QThread):
         try:
             candidates = caps.candidate_layers(
                 self.layers, self.lon, self.lat,
-                max_area=600.0, passes_only=True
+                passes_only=True
             )
             confirmed = coverage.confirm_coverage(
                 candidates, self.lon, self.lat
@@ -132,11 +132,12 @@ class CoronaMapTool(QgsMapToolEmitPoint):
 
     def _on_error(self, err, web_url):
         QApplication.restoreOverrideCursor()
+        # Show the real error so failures are visible instead of silently
+        # opening the browser. The user can still open CAST from the dialog
+        # or with the Click & Go tool.
         iface.messageBar().pushMessage(
             "🛰 Corona CAST",
-            f"Coverage check failed: {err} — opening browser instead.",
+            f"Coverage check failed: {err}",
             level=Qgis.Warning,
-            duration=6,
+            duration=8,
         )
-        import webbrowser
-        webbrowser.open(web_url)
